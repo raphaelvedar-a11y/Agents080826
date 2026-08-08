@@ -18,6 +18,7 @@ Dieses private Paket enthaelt 73 neutrale Agentendefinitionen fuer Claude Code o
 - `scripts/validate_package.py`: Paketpruefung in zwei Modi (`preflight`, `release`)
 - `scripts/select_agents.py`: leitet aus dem Firmenprofil das aktive Kernteam ab
 - `scripts/test_install.sh`: Regressionstest der Installation
+- `scripts/abgleich.py`: vergleicht dieses Paket mit einem zweiten Bestand
 - `.claude/hooks/session-start.sh`: installiert die Agenten automatisch beim Oeffnen
 
 ## Sicherheitszustand bei Auslieferung
