@@ -246,7 +246,7 @@ if command -v python3 >/dev/null 2>&1; then
   fi
 
   # 17) Und die Ausnahme deckt genau ein Werkzeug ab, nicht alles Weitere.
-  sed 's/^tools: \[Read, Bash\]/tools: [Read, Bash, Edit]/' \
+  sed 's/^tools: \[Read, Write, Bash\]/tools: [Read, Write, Bash, Edit]/' \
     "$REPO/reviewer.sicherung" > "$REPO/agents/security-reviewer.md"
   if (cd "$REPO" && python3 scripts/validate_package.py --mode preflight >/dev/null 2>&1); then
     bad "Ausnahme deckt nur Bash, nicht Edit" "Edit wurde durchgelassen"
