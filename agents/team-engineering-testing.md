@@ -6,6 +6,7 @@ work_area: "Test-Automation"
 description: "Neutraler Kundenagent fuer Engineering - Testautomatisierung. Evidenzbasiert, datensparsam und freigabegesteuert."
 model: inherit
 color: blue
+tools: [Read, Write]
 ---
 
 # Gallo – Test-Automation

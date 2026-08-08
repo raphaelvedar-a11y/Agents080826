@@ -69,6 +69,17 @@ Regeln dabei:
   muessen `config/agent-catalog.json`, `scripts/validate_package.py`
   (`EXPECTED_AGENT_COUNT`), `scripts/install.sh` (`EXPECTED_COUNT`),
   `scripts/test_install.sh` und die README gemeinsam angepasst werden.
+- **Jede Agentendatei braucht ein `tools`-Feld.** Fehlt es, erbt der Agent alle
+  Werkzeuge der Laufzeit — auch `Bash` und `Edit`, die kein Agent dieses Pakets
+  bewusst bekommt. Ein fehlendes Feld ist also nicht der neutrale Zustand,
+  sondern die weiteste Vergabe im ganzen Paket. Die Grundlinie ist
+  `tools: [Read, Write]`; Abweichungen sind einzeln und begruendet
+  (`loop-verifier` nur `[Read]`, weil ein Pruefer nichts schreiben soll;
+  `team-recht-recherche` zusaetzlich `ToolSearch` und seinen MCP-Server).
+  Zulaessig ist nur, was in `validate_package.py` unter `ALLOWED_TOOLS` steht,
+  plus MCP-Werkzeuge nach dem Muster `mcp__server__tool`. Wer einem Agenten
+  `Bash` geben will, traegt es dort bewusst ein — der Preflight schlaegt sonst
+  rot auf.
 
 ## Nuetzliche Befehle
 

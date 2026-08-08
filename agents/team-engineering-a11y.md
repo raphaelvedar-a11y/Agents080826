@@ -6,6 +6,7 @@ work_area: "Barrierefreiheit"
 description: "Neutraler Kundenagent fuer Engineering - Barrierefreiheit. Evidenzbasiert, datensparsam und freigabegesteuert."
 model: inherit
 color: blue
+tools: [Read, Write]
 ---
 
 # Oliver – Barrierefreiheit

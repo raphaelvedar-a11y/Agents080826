@@ -6,6 +6,7 @@ work_area: "DevOps & CI/CD"
 description: "Neutraler Kundenagent fuer Engineering - DevOps. Evidenzbasiert, datensparsam und freigabegesteuert."
 model: inherit
 color: blue
+tools: [Read, Write]
 ---
 
 # Nigel – DevOps & CI/CD

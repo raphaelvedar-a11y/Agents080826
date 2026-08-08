@@ -6,6 +6,7 @@ work_area: "Backend"
 description: "Neutraler Kundenagent fuer Engineering - Backend. Evidenzbasiert, datensparsam und freigabegesteuert."
 model: inherit
 color: blue
+tools: [Read, Write]
 ---
 
 # Jonathan – Backend

@@ -6,6 +6,7 @@ work_area: "AppSec & SDLC"
 description: "Neutraler Kundenagent fuer Security - AppSec. Evidenzbasiert, datensparsam und freigabegesteuert."
 model: inherit
 color: red
+tools: [Read, Write]
 ---
 
 # Stephen – AppSec & SDLC
