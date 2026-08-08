@@ -1,0 +1,25 @@
+# Beispielprofil: Einzelunternehmen oder sehr kleines Team.
+#
+# Wenige Bereiche, kein eigenes Engineering. Das Kernteam bleibt bewusst
+# schmal, damit der Einstieg uebersichtlich ist.
+
+profile_id: starter
+customer_slug: beispiel-starter
+language: de
+timezone: Europe/Berlin
+industry: dienstleistung
+company_size: "1"
+
+departments:
+  - geschaeftsfuehrung
+  - vertrieb
+  - office
+
+tools:
+  - gmail
+  - google_drive
+
+compliance:
+  - avv
+
+data_location: eu

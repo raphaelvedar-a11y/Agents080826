@@ -1,0 +1,124 @@
+# Katalog, keine aktive MCP-Konfiguration.
+# Der Kunde installiert nur benoetigte Server und nutzt eigene Konten.
+mcp_policy:
+  default_enabled: false
+  credentials_location: "outside_repository"
+  customer_owned_accounts_only: true
+  start_read_only: true
+  write_tools_require_approval: true
+
+categories:
+  - id: memory
+    purpose: "Kundeneigenes Wissens- und Zustandsmanagement"
+    enabled: false
+  - id: email
+    purpose: "E-Mail lesen und Entwuerfe erstellen"
+    enabled: false
+  - id: calendar
+    purpose: "Kalender lesen und freigabepflichtige Terminentwuerfe"
+    enabled: false
+  - id: cloud_storage
+    purpose: "Dokumente in kundeneigenen Speichern"
+    enabled: false
+  - id: crm
+    purpose: "Kundeneigenes CRM"
+    enabled: false
+  - id: accounting
+    purpose: "Kundeneigene Buchhaltung, zu Beginn nur lesend"
+    enabled: false
+  - id: legal_research
+    purpose: "Rechtsquellen und Recherche"
+    enabled: false
+  - id: source_control
+    purpose: "Kundeneigene Code-Repositories"
+    enabled: false
+  - id: database
+    purpose: "Kundeneigene Datenbank, zu Beginn nur lesend"
+    enabled: false
+  - id: social_media
+    purpose: "Entwuerfe; Publikation nur mit Einzel-Freigabe"
+    enabled: false
+  - id: deployment
+    purpose: "Preview und Deployment, Produktion nur mit Einzel-Freigabe"
+    enabled: false
+
+# Erwartete Integrationsfamilien aus den Agentendefinitionen. Dies sind weder
+# Installationsbefehle noch aktive Server. Quelle, Version und Berechtigungen
+# muessen vor der kundenseitigen Installation separat geprueft werden.
+optional_integrations:
+  - id: gmail
+    category: email
+    enabled: false
+    authentication: "customer_owned"
+  - id: outlook
+    category: email
+    enabled: false
+    authentication: "customer_owned"
+  - id: google_calendar
+    category: calendar
+    enabled: false
+    authentication: "customer_owned"
+  - id: google_drive
+    category: cloud_storage
+    enabled: false
+    authentication: "customer_owned"
+  - id: onedrive
+    category: cloud_storage
+    enabled: false
+    authentication: "customer_owned"
+  - id: crm
+    category: crm
+    enabled: false
+    authentication: "customer_owned"
+  - id: sevdesk
+    category: accounting
+    enabled: false
+    authentication: "customer_owned"
+  - id: buchhaltungsbutler
+    category: accounting
+    enabled: false
+    authentication: "customer_owned"
+  - id: stripe
+    category: accounting
+    enabled: false
+    authentication: "customer_owned"
+  - id: german_law
+    category: legal_research
+    enabled: false
+    authentication: "customer_owned"
+  - id: github
+    category: source_control
+    enabled: false
+    authentication: "customer_owned"
+  - id: supabase
+    category: database
+    enabled: false
+    authentication: "customer_owned"
+  - id: postiz
+    category: social_media
+    enabled: false
+    authentication: "customer_owned"
+  - id: mailchimp
+    category: email
+    enabled: false
+    authentication: "customer_owned"
+  - id: instantly
+    category: email
+    enabled: false
+    authentication: "customer_owned"
+  - id: heygen
+    category: social_media
+    enabled: false
+    authentication: "customer_owned"
+  - id: canva
+    category: social_media
+    enabled: false
+    authentication: "customer_owned"
+  - id: cloudflare
+    category: deployment
+    enabled: false
+    authentication: "customer_owned"
+  - id: vercel
+    category: deployment
+    enabled: false
+    authentication: "customer_owned"

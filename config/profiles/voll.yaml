@@ -1,0 +1,63 @@
+# Beispielprofil: Vollausbau. Alle Bereiche und Werkzeuge aktiv.
+#
+# Nuetzlich als Gegenprobe: Mit diesem Profil muessen alle 73 Agenten aktiv
+# sein. Die CI prueft genau das, damit kein Agent durch fehlende Trigger
+# dauerhaft unerreichbar wird.
+
+profile_id: voll
+customer_slug: beispiel-voll
+language: de
+timezone: Europe/Berlin
+industry: immobilien
+company_size: "250+"
+
+departments:
+  - geschaeftsfuehrung
+  - vertrieb
+  - marketing
+  - finanzen
+  - buchhaltung
+  - recht
+  - produkt
+  - engineering
+  - security
+  - it
+  - office
+  - kundenservice
+
+tools:
+  - gmail
+  - outlook
+  - google_calendar
+  - google_drive
+  - onedrive
+  - crm
+  - sevdesk
+  - buchhaltungsbutler
+  - stripe
+  - german_law
+  - github
+  - supabase
+  - website
+  - google_business
+  - google_ads
+  - meta_ads
+  - instagram
+  - facebook
+  - linkedin
+  - tiktok
+  - youtube
+  - postiz
+  - mailchimp
+  - instantly
+  - heygen
+  - canva
+  - cloudflare
+  - vercel
+
+compliance:
+  - avv
+  - berufsgeheimnis_paragraph_203
+  - iso27001
+
+data_location: deutschland

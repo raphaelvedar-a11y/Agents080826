@@ -1,0 +1,31 @@
+# Rueckfallprofil.
+#
+# Greift immer dann, wenn der Firmen-Steckbrief (Stufe 1) noch nicht
+# beantwortet ist. Es beschreibt einen allgemeinen Mittelstandsbetrieb ohne
+# eigene IT- oder Produktabteilung.
+#
+# Zweck: Die Installation soll nie auf eine Antwort warten muessen. Alle
+# Agentendefinitionen werden ohnehin installiert; dieses Profil sorgt nur
+# dafuer, dass der Kunde sofort ein sinnvolles Kernteam sieht.
+
+profile_id: default
+customer_slug: ""
+language: de
+timezone: Europe/Berlin
+industry: sonstiges
+company_size: "2-10"
+
+departments:
+  - geschaeftsfuehrung
+  - vertrieb
+  - marketing
+  - finanzen
+  - office
+  - kundenservice
+
+tools: []
+
+compliance:
+  - avv
+
+data_location: eu

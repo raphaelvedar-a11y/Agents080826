@@ -1,0 +1,146 @@
+# Stufe 1 des Onboardings: Firmen-Steckbrief.
+#
+# Diese Fragen werden VOR der Installation gestellt, weil genau sie
+# entscheiden, welche Agenten zum aktiven Kernteam gehoeren. Sie sind bewusst
+# kurz und ohne Systemkenntnis beantwortbar.
+#
+# Harte Regel: Diese Fragen blockieren die Installation NIE. Bleiben sie
+# unbeantwortet, greift config/profiles/default.yaml, und es werden trotzdem
+# alle Agentendefinitionen installiert. Die Antworten steuern ausschliesslich
+# die Priorisierung und lassen sich jederzeit nachtragen.
+#
+# Die eigentlichen Zugangs- und Kontofragen gehoeren zu Stufe 2 und werden
+# erst nach der Installation gestellt, je aktivem Agenten. Siehe
+# docs/ONBOARDING-ABLAUF.md.
+
+stage: 1
+purpose: "Priorisierung der Agenten, nicht Freischaltung von Zugaengen"
+blocking: false
+estimated_minutes: 5
+
+questions:
+  - id: customer_slug
+    label: "Wie soll euer Kundenbereich technisch heissen (Kleinbuchstaben, Bindestriche)?"
+    type: text
+    required: true
+    example: "beispiel-gmbh"
+
+  - id: industry
+    label: "In welcher Branche seid ihr taetig?"
+    type: single_select
+    required: true
+    options:
+      - handwerk
+      - immobilien
+      - kanzlei
+      - agentur
+      - ecommerce
+      - software
+      - dienstleistung
+      - gastronomie
+      - gesundheit
+      - industrie
+      - verein
+      - sonstiges
+
+  - id: company_size
+    label: "Wie viele Personen arbeiten im Unternehmen?"
+    type: single_select
+    required: true
+    options:
+      - "1"
+      - "2-10"
+      - "11-50"
+      - "51-250"
+      - "250+"
+
+  - id: departments
+    label: "Welche Bereiche gibt es bei euch tatsaechlich? (Mehrfachauswahl)"
+    type: multi_select
+    required: true
+    note: "Steuert direkt, welche Fachagenten aktiv werden."
+    options:
+      - geschaeftsfuehrung
+      - vertrieb
+      - marketing
+      - finanzen
+      - buchhaltung
+      - recht
+      - produkt
+      - engineering
+      - security
+      - it
+      - office
+      - kundenservice
+
+  - id: tools
+    label: "Welche Systeme nutzt ihr heute schon? (Mehrfachauswahl)"
+    type: multi_select
+    required: false
+    note: "Nur ankreuzen, was wirklich im Einsatz ist. Zugaenge werden hier noch nicht abgefragt."
+    options:
+      - gmail
+      - outlook
+      - google_calendar
+      - google_drive
+      - onedrive
+      - crm
+      - sevdesk
+      - buchhaltungsbutler
+      - stripe
+      - german_law
+      - github
+      - supabase
+      - website
+      - google_business
+      - google_ads
+      - meta_ads
+      - instagram
+      - facebook
+      - linkedin
+      - tiktok
+      - youtube
+      - postiz
+      - mailchimp
+      - instantly
+      - heygen
+      - canva
+      - cloudflare
+      - vercel
+
+  - id: language
+    label: "In welcher Sprache sollen die Agenten arbeiten?"
+    type: single_select
+    required: false
+    default: "de"
+    options: ["de", "en"]
+
+  - id: timezone
+    label: "Welche Zeitzone gilt fuer Termine und Fristen?"
+    type: text
+    required: false
+    default: "Europe/Berlin"
+
+  - id: approval_owner
+    label: "Wer gibt externe und irreversible Aktionen frei? (Rolle, nicht E-Mail-Adresse)"
+    type: text
+    required: true
+    note: "Rollenbezeichnung genuegt. Kontaktdaten gehoeren nicht in dieses Repository."
+
+  - id: compliance
+    label: "Gibt es besondere Anforderungen? (Mehrfachauswahl)"
+    type: multi_select
+    required: false
+    options:
+      - avv
+      - berufsgeheimnis_paragraph_203
+      - betriebsrat
+      - iso27001
+      - keine
+
+  - id: data_location
+    label: "Gibt es Vorgaben, wo Daten liegen duerfen?"
+    type: single_select
+    required: false
+    default: "eu"
+    options: ["eu", "deutschland", "keine_vorgabe"]

@@ -1,0 +1,23 @@
+customer:
+  display_name: "CUSTOMER_NAME"
+  language: "de"
+  timezone: "Europe/Berlin"
+
+governance:
+  approval_owner: "RESPONSIBLE_PERSON"
+  external_actions_default: "blocked"
+  destructive_actions_default: "blocked"
+  financial_actions_default: "blocked"
+  production_changes_default: "blocked"
+  require_persisted_state_verification: true
+
+data_policy:
+  data_minimization: true
+  retain_secrets_in_repository: false
+  retain_customer_data_in_prompts: false
+  log_redaction_required: true
+
+runtime:
+  provider: "CUSTOMER_SELECTED"
+  model_policy: "CUSTOMER_SELECTED"
+  integrations_file: "CUSTOMER_MANAGED_OUTSIDE_REPOSITORY"

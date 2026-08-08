@@ -1,0 +1,33 @@
+# Beispielprofil: klassischer Mittelstandsbetrieb mit Vertrieb, Marketing und
+# eigener Buchhaltung, aber ohne eigene Softwareentwicklung.
+
+profile_id: standard
+customer_slug: beispiel-standard
+language: de
+timezone: Europe/Berlin
+industry: handwerk
+company_size: "11-50"
+
+departments:
+  - geschaeftsfuehrung
+  - vertrieb
+  - marketing
+  - finanzen
+  - buchhaltung
+  - office
+  - kundenservice
+
+tools:
+  - outlook
+  - onedrive
+  - crm
+  - sevdesk
+  - website
+  - google_business
+  - instagram
+  - facebook
+
+compliance:
+  - avv
+
+data_location: deutschland

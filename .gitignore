@@ -1,0 +1,28 @@
+.DS_Store
+Icon?
+*.local.*
+.env
+.env.*
+!.env.example
+secrets/
+credentials/
+tokens/
+logs/
+memory/
+runtime-state/
+node_modules/
+__pycache__/
+*.pyc
+
+# Laufzeitergebnisse der Installation. Die Agentendefinitionen liegen
+# versioniert unter agents/; die installierten Kopien und die Berichte sind
+# kundenspezifischer Laufzeitzustand und gehoeren nicht ins Repository.
+.claude/agents/
+.claude/agent-install-report.json
+.claude/agent-activation.json
+*.bak-*
+
+# Aktive MCP-Konfigurationen gehoeren nie ins Repository. Der Kunde richtet
+# sie in seiner Runtime ein, mit eigenen Konten. Siehe docs/MCP-SETUP.md.
+.mcp.json
+mcp.json

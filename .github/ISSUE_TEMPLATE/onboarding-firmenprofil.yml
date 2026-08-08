@@ -1,0 +1,165 @@
+name: "Firmen-Steckbrief (Onboarding Stufe 1)"
+description: "Kurzprofil des Unternehmens. Steuert, welche Agenten das aktive Kernteam bilden."
+title: "Firmen-Steckbrief"
+labels: ["firmenprofil", "onboarding"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Kurzprofil eures Unternehmens
+
+        Das dauert etwa fuenf Minuten.
+
+        **Wichtig vorweg:** Die Installation der Agenten laeuft unabhaengig von
+        diesem Formular und ist vermutlich schon durch. Diese Antworten
+        entscheiden ausschliesslich, **welche** Agenten als aktives Kernteam
+        vorgeschlagen werden. Alle uebrigen bleiben installiert und lassen sich
+        jederzeit ohne Neuinstallation dazuschalten.
+
+        **Keine Zugangsdaten in dieses Formular.** Passwoerter, API-Keys und
+        Kontodaten werden spaeter in Stufe 2 ueber einen geschuetzten Weg
+        uebergeben, nie ueber ein GitHub-Issue.
+
+  - type: input
+    id: customer_slug
+    attributes:
+      label: Kundenkuerzel
+      description: "Kleinbuchstaben und Bindestriche, dient als technischer Name des Kundenbereichs."
+      placeholder: beispiel-gmbh
+    validations:
+      required: true
+
+  - type: dropdown
+    id: industry
+    attributes:
+      label: Branche
+      options:
+        - handwerk
+        - immobilien
+        - kanzlei
+        - agentur
+        - ecommerce
+        - software
+        - dienstleistung
+        - gastronomie
+        - gesundheit
+        - industrie
+        - verein
+        - sonstiges
+    validations:
+      required: true
+
+  - type: dropdown
+    id: company_size
+    attributes:
+      label: Unternehmensgroesse
+      options:
+        - "1"
+        - "2-10"
+        - "11-50"
+        - "51-250"
+        - "250+"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: departments
+    attributes:
+      label: Bereiche
+      description: "Welche Bereiche gibt es bei euch tatsaechlich? Das ist der wichtigste Hebel fuer die Agentenauswahl."
+      options:
+        - label: geschaeftsfuehrung
+        - label: vertrieb
+        - label: marketing
+        - label: finanzen
+        - label: buchhaltung
+        - label: recht
+        - label: produkt
+        - label: engineering
+        - label: security
+        - label: it
+        - label: office
+        - label: kundenservice
+
+  - type: checkboxes
+    id: tools
+    attributes:
+      label: Systeme im Einsatz
+      description: "Nur ankreuzen, was heute wirklich genutzt wird. Zugaenge werden hier noch nicht abgefragt."
+      options:
+        - label: gmail
+        - label: outlook
+        - label: google_calendar
+        - label: google_drive
+        - label: onedrive
+        - label: crm
+        - label: sevdesk
+        - label: buchhaltungsbutler
+        - label: stripe
+        - label: german_law
+        - label: github
+        - label: supabase
+        - label: website
+        - label: google_business
+        - label: google_ads
+        - label: meta_ads
+        - label: instagram
+        - label: facebook
+        - label: linkedin
+        - label: tiktok
+        - label: youtube
+        - label: postiz
+        - label: mailchimp
+        - label: instantly
+        - label: heygen
+        - label: canva
+        - label: cloudflare
+        - label: vercel
+
+  - type: dropdown
+    id: language
+    attributes:
+      label: Sprache
+      options:
+        - de
+        - en
+    validations:
+      required: false
+
+  - type: input
+    id: timezone
+    attributes:
+      label: Zeitzone
+      placeholder: Europe/Berlin
+    validations:
+      required: false
+
+  - type: input
+    id: approval_owner
+    attributes:
+      label: Freigabeverantwortung
+      description: "Nur die Rolle eintragen, keine E-Mail-Adresse und keinen Personennamen."
+      placeholder: "Geschaeftsfuehrung"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: compliance
+    attributes:
+      label: Besondere Anforderungen
+      options:
+        - label: avv
+        - label: berufsgeheimnis_paragraph_203
+        - label: betriebsrat
+        - label: iso27001
+
+  - type: dropdown
+    id: data_location
+    attributes:
+      label: Datenstandort
+      options:
+        - eu
+        - deutschland
+        - keine_vorgabe
+    validations:
+      required: false

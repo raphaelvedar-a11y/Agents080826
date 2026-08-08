@@ -1,0 +1,121 @@
+name: Onboarding starten
+
+# Startet das Onboarding, sobald ein Kunde zum Repository eingeladen wurde.
+#
+# Bekannte Einschraenkung: Das "member"-Ereignis feuert nur, wenn dieser
+# Workflow bereits auf dem Default-Branch liegt, und je nach Kontoart nicht bei
+# jeder ausstehenden Einladung. Deshalb gibt es zwei verlaessliche Rueckfallwege
+# (workflow_dispatch von Hand, repository_dispatch aus einem eigenen System).
+# Auf keinen dieser Ausloeser ist die Installation angewiesen: Die Agenten
+# installiert der SessionStart-Hook ohnehin selbst.
+
+on:
+  member:
+    types: [added]
+  workflow_dispatch:
+    inputs:
+      kunde:
+        description: "GitHub-Benutzername des Kunden (optional)"
+        required: false
+        type: string
+  repository_dispatch:
+    types: [kunde-eingeladen]
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  willkommen:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Willkommens- und Steckbrief-Issue anlegen
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const eingeladen =
+              context.payload.member?.login ||
+              context.payload.inputs?.kunde ||
+              context.payload.client_payload?.kunde ||
+              '';
+
+            // Doppelte Willkommens-Issues vermeiden, falls der Workflow
+            // mehrfach ausgeloest wird.
+            const vorhanden = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'onboarding-willkommen',
+            });
+            if (vorhanden.data.length > 0) {
+              core.info(`Willkommens-Issue existiert bereits: #${vorhanden.data[0].number}`);
+              return;
+            }
+
+            const anrede = eingeladen ? `@${eingeladen}` : 'willkommen';
+            const formular = `https://github.com/${context.repo.owner}/${context.repo.repo}` +
+              `/issues/new?template=onboarding-firmenprofil.yml`;
+
+            const body = [
+              `Hallo ${anrede}, willkommen im Agentensystem.`,
+              ``,
+              `## Was bereits laeuft`,
+              ``,
+              `Die Agentendefinitionen installieren sich selbst, sobald dieses`,
+              `Repository in Claude Code geoeffnet wird. Dafuer ist nichts zu tun.`,
+              `Nach dem ersten Oeffnen steht das Ergebnis in`,
+              `\`.claude/agent-install-report.json\`; dort muss \`"complete": true\``,
+              `stehen. Falls nicht, nennt die Datei die fehlenden Agenten namentlich.`,
+              ``,
+              `Manuell laesst sich dasselbe jederzeit ausloesen:`,
+              ``,
+              '```bash',
+              `./scripts/install.sh --project`,
+              '```',
+              ``,
+              `## Was wir von euch brauchen (Stufe 1, etwa 5 Minuten)`,
+              ``,
+              `Bitte den **Firmen-Steckbrief** ausfuellen:`,
+              ``,
+              `-> ${formular}`,
+              ``,
+              `Diese Angaben entscheiden ausschliesslich, **welche** Agenten euer`,
+              `aktives Kernteam bilden. Installiert sind ohnehin alle; die uebrigen`,
+              `bleiben auf Abruf und lassen sich ohne Neuinstallation dazuschalten.`,
+              `Solange der Steckbrief offen ist, laeuft ein neutrales Rueckfallprofil.`,
+              ``,
+              `## Was spaeter kommt (Stufe 2)`,
+              ``,
+              `Erst wenn feststeht, welche Agenten aktiv sind, fragen wir die`,
+              `Zugaenge ab -- gezielt und nur fuer die Systeme, die diese Agenten`,
+              `wirklich brauchen.`,
+              ``,
+              `> **Keine Zugangsdaten in GitHub-Issues.** Passwoerter, API-Keys und`,
+              `> Kontodaten werden ausschliesslich ueber den vereinbarten`,
+              `> geschuetzten Weg uebergeben.`,
+              ``,
+              `Details zum Ablauf: \`docs/ONBOARDING-ABLAUF.md\`.`,
+            ].join('\n');
+
+            const issue = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: 'Onboarding: Willkommen und naechste Schritte',
+              body,
+              labels: ['onboarding-willkommen', 'onboarding'],
+            });
+
+            if (eingeladen) {
+              try {
+                await github.rest.issues.addAssignees({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.data.number,
+                  assignees: [eingeladen],
+                });
+              } catch (error) {
+                core.info(`Zuweisung an ${eingeladen} nicht moeglich: ${error.message}`);
+              }
+            }
+
+            core.info(`Willkommens-Issue angelegt: #${issue.data.number}`);

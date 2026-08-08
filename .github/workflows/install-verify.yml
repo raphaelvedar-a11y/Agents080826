@@ -1,0 +1,88 @@
+name: Installation pruefen
+
+# Regressionstest fuer die Kundeninstallation.
+#
+# Hintergrund: Eine Kundeninstallation hat sich ohne Fehlermeldung mit 0 von 73
+# Agenten beendet, weil das Auslieferungs-Gate vor der Installation lief und an
+# kundeneigenen Dateien angeschlagen ist. Aufgefallen ist es erst beim Kunden.
+# Dieser Workflow fixiert die Szenarien, damit das nicht wieder passiert.
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pruefen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Auslieferungs-Gate
+        run: python3 scripts/validate_package.py --mode release
+
+      - name: Paketpruefung fuer die Installation
+        run: python3 scripts/validate_package.py --mode preflight
+
+      - name: Installations-Szenarien
+        run: bash scripts/test_install.sh
+
+      - name: Beispielprofile bleiben auswertbar
+        run: |
+          set -euo pipefail
+          for profil in config/profiles/*.yaml; do
+            echo "--- $profil"
+            python3 scripts/select_agents.py --profile "$profil" --output /tmp/act.json
+          done
+
+      - name: Steckbrief-Auswertung inklusive Positivlisten-Filter
+        run: |
+          set -euo pipefail
+          cat > /tmp/issue.md <<'BODY'
+          ### Kundenkuerzel
+
+          Test GmbH!!
+
+          ### Branche
+
+          handwerk
+
+          ### Bereiche
+
+          - [x] vertrieb
+          - [x] nicht-existierender-bereich
+
+          ### Systeme im Einsatz
+
+          - [x] sevdesk
+
+          ### Freigabeverantwortung
+
+          Rolle Muster
+          BODY
+          python3 scripts/parse_profile_issue.py --body-file /tmp/issue.md --output /tmp/aktiv.yaml
+          grep -q 'customer_slug: "test-gmbh"' /tmp/aktiv.yaml
+          grep -q '  - vertrieb' /tmp/aktiv.yaml
+          ! grep -q 'nicht-existierender-bereich' /tmp/aktiv.yaml
+          echo "Positivlisten-Filter greift."
+
+      - name: SessionStart-Hook laeuft und ist idempotent
+        run: |
+          set -euo pipefail
+          bash .claude/hooks/session-start.sh
+          bash .claude/hooks/session-start.sh
+          python3 - <<'PY'
+          import json, sys
+          report = json.load(open(".claude/agent-install-report.json"))
+          assert report["complete"] is True, report
+          assert report["verified"] == 73, report
+          print(f"Hook ok: {report['verified']}/{report['expected']} verifiziert")
+          PY

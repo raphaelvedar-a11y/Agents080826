@@ -1,0 +1,41 @@
+# Beispielprofil: Unternehmen mit eigener Produkt- und Entwicklungsabteilung.
+# Hier kommen Engineering-, Security- und Produktagenten dazu.
+
+profile_id: pro
+customer_slug: beispiel-pro
+language: de
+timezone: Europe/Berlin
+industry: software
+company_size: "51-250"
+
+departments:
+  - geschaeftsfuehrung
+  - vertrieb
+  - marketing
+  - finanzen
+  - produkt
+  - engineering
+  - security
+  - it
+  - office
+  - kundenservice
+
+tools:
+  - google_calendar
+  - google_drive
+  - gmail
+  - crm
+  - stripe
+  - github
+  - supabase
+  - vercel
+  - cloudflare
+  - website
+  - linkedin
+  - google_ads
+
+compliance:
+  - avv
+  - iso27001
+
+data_location: eu
