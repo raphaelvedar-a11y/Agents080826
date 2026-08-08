@@ -16,6 +16,8 @@ Dieses private Paket enthaelt 73 neutrale Agentendefinitionen fuer Claude Code o
 - `docs/INSTALLATION-RUNBOOK.md`: Installation, Nachweis und Fehlerbehebung
 - `scripts/install.sh` / `scripts/install.ps1`: Installation mit Verifikation
 - `scripts/validate_package.py`: Paketpruefung in zwei Modi (`preflight`, `release`)
+- `scripts/parse_profile_issue.py`: macht aus dem ausgefuellten Steckbrief-Issue
+  ein Profil; uebernimmt nur, was auf einer Positivliste steht
 - `scripts/select_agents.py`: leitet aus dem Firmenprofil das aktive Kernteam ab
 - `scripts/test_install.sh`: Regressionstest der Installation
 - `scripts/abgleich.py`: vergleicht dieses Paket mit einem zweiten Bestand
