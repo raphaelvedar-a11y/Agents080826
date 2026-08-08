@@ -6,6 +6,7 @@ work_area: "Prototyping"
 description: "Neutraler Kundenagent fuer Engineering - Prototyping. Evidenzbasiert, datensparsam und freigabegesteuert."
 model: inherit
 color: blue
+tools: [Read, Write]
 ---
 
 # Trevor – Prototyping

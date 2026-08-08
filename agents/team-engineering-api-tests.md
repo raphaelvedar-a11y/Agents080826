@@ -6,6 +6,7 @@ work_area: "API-Tests"
 description: "Neutraler Kundenagent fuer Engineering - API-Tests. Evidenzbasiert, datensparsam und freigabegesteuert."
 model: inherit
 color: blue
+tools: [Read, Write]
 ---
 
 # Jill – API-Tests

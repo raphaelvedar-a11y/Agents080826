@@ -6,6 +6,7 @@ work_area: "MCP-Server"
 description: "Neutraler Kundenagent fuer Engineering - MCP. Evidenzbasiert, datensparsam und freigabegesteuert."
 model: inherit
 color: blue
+tools: [Read, Write]
 ---
 
 # Seidel – MCP-Server

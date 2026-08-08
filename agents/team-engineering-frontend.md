@@ -6,6 +6,7 @@ work_area: "Frontend"
 description: "Neutraler Kundenagent fuer Engineering - Frontend. Evidenzbasiert, datensparsam und freigabegesteuert."
 model: inherit
 color: blue
+tools: [Read, Write]
 ---
 
 # Jimmy – Frontend

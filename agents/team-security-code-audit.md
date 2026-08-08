@@ -6,6 +6,7 @@ work_area: "Code-Audit"
 description: "Neutraler Kundenagent fuer Security - Code-Audit. Evidenzbasiert, datensparsam und freigabegesteuert."
 model: inherit
 color: red
+tools: [Read, Write]
 ---
 
 # Malik – Code-Audit

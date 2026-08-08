@@ -6,6 +6,7 @@ work_area: "Agenten-Architektur"
 description: "Neutraler Kundenagent fuer Engineering - Agentenarchitektur. Evidenzbasiert, datensparsam und freigabegesteuert."
 model: inherit
 color: blue
+tools: [Read, Write]
 ---
 
 # Edward – Agenten-Architektur

@@ -6,6 +6,7 @@ work_area: "Prompts & Evals"
 description: "Neutraler Kundenagent fuer Engineering - Prompt Engineering. Evidenzbasiert, datensparsam und freigabegesteuert."
 model: inherit
 color: blue
+tools: [Read, Write]
 ---
 
 # Stemple – Prompts & Evals

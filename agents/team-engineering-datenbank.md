@@ -6,6 +6,7 @@ work_area: "Datenbank"
 description: "Neutraler Kundenagent fuer Engineering - Datenbanken. Evidenzbasiert, datensparsam und freigabegesteuert."
 model: inherit
 color: blue
+tools: [Read, Write]
 ---
 
 # David – Datenbank

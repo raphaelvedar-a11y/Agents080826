@@ -6,6 +6,7 @@ work_area: "Code-Security-Review"
 description: "Neutraler Kundenagent fuer Security Reviewer. Evidenzbasiert, datensparsam und freigabegesteuert."
 model: inherit
 color: red
+tools: [Read, Write]
 ---
 
 # Cameron – Code-Security-Review

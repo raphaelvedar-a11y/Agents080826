@@ -41,6 +41,25 @@ EXPECTED_AGENT_COUNT = 73
 ALLOWED_TIERS = {"core", "standard", "optional"}
 TRIGGER_KEYS = {"departments", "tools", "industries"}
 
+# Der Werkzeugwortschatz des Pakets.
+#
+# Der Zweck ist nicht Dokumentation, sondern ein Fangnetz. Ein Agent ohne
+# tools-Feld erbt in Claude Code ALLE Werkzeuge der Laufzeit -- auch Bash und
+# Edit, die kein einziger Agent dieses Pakets bewusst bekommt. Das faellt
+# nirgends auf: die Datei ist syntaktisch vollstaendig, der Katalog stimmt,
+# und die Installation meldet 73 von 73. Genau so standen 20 der 73 Agenten
+# unbemerkt ohne Werkzeuggrenze da, darunter Pentest, Code-Audit und DevOps.
+#
+# Deshalb hier eine Positivliste statt einer Sperrliste: ein neu eingefuehrtes,
+# noch nicht eingeordnetes Werkzeug schlaegt rot auf, statt still
+# durchzurutschen. Wer einem Agenten kuenftig Bash geben will, traegt es hier
+# bewusst ein -- und diese Zeile ist dann die Stelle, an der jemand hinsieht.
+ALLOWED_TOOLS = {"Read", "Write", "ToolSearch"}
+
+# MCP-Werkzeuge werden ueber ihr Namensmuster zugelassen, nicht einzeln: welche
+# Server der Kunde aktiviert, entscheidet er selbst (siehe docs/MCP-SETUP.md).
+MCP_TOOL_PATTERN = re.compile(r"\Amcp__[a-z0-9_-]+__(?:\*|[A-Za-z0-9_]+)\Z")
+
 SECRET_PATTERNS = {
     "private key": re.compile(r"-----BEGIN [A-Z ]*PRIVATE KEY-----"),
     "github token": re.compile(r"\b(?:gh[opsu]_[A-Za-z0-9_]{20,}|github_pat_[A-Za-z0-9_]{20,})\b"),
@@ -167,6 +186,38 @@ def check_catalog(catalog_entries: list[dict], errors: list[str]) -> dict[str, d
     return catalog
 
 
+def check_agent_tools(path: Path, text: str, errors: list[str]) -> None:
+    """Jeder Agent braucht eine ausdrueckliche Werkzeugliste.
+
+    Ein weggelassenes tools-Feld ist kein neutraler Zustand: die Laufzeit
+    vergibt dann alle Werkzeuge, die sie hat. Ein fehlendes Feld ist damit die
+    weiteste Vergabe im ganzen Paket -- und die einzige, die niemand
+    aufgeschrieben hat. Siehe ALLOWED_TOOLS.
+    """
+    match = re.search(r"(?m)^tools:\s*\[(.*?)\]\s*$", text)
+    if not match:
+        fail(
+            f"missing tools field in {path.relative_to(ROOT)} "
+            f"(ohne tools-Feld erbt der Agent alle Werkzeuge der Laufzeit)",
+            errors,
+        )
+        return
+
+    eintraege = [teil.strip() for teil in match.group(1).split(",") if teil.strip()]
+    if not eintraege:
+        fail(f"empty tools list in {path.relative_to(ROOT)}", errors)
+        return
+
+    for werkzeug in eintraege:
+        if werkzeug in ALLOWED_TOOLS or MCP_TOOL_PATTERN.match(werkzeug):
+            continue
+        fail(
+            f"unknown tool {werkzeug!r} in {path.relative_to(ROOT)} "
+            f"(erlaubt: {', '.join(sorted(ALLOWED_TOOLS))} oder mcp__server__tool)",
+            errors,
+        )
+
+
 def check_agent_files(catalog: dict[str, dict], errors: list[str]) -> None:
     """Agentendateien gegen Katalog und Schutzregeln pruefen."""
     agent_files = sorted(AGENTS.glob("*.md"))
@@ -198,6 +249,7 @@ def check_agent_files(catalog: dict[str, dict], errors: list[str]) -> None:
                         fail(f"{field} does not match catalog in {path.relative_to(ROOT)}", errors)
                 if f"# {entry['display_name']}" not in text:
                     fail(f"display heading does not match catalog in {path.relative_to(ROOT)}", errors)
+        check_agent_tools(path, text, errors)
         if "blocked_missing_access" not in text:
             fail(f"missing access guard in {path.relative_to(ROOT)}", errors)
         if "approval_required" not in text:

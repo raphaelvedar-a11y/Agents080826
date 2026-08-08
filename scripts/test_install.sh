@@ -208,6 +208,31 @@ if command -v python3 >/dev/null 2>&1; then
     ok "Release-Gate sieht auch noch nicht committete Dateien"
   fi
   rm -f "$REPO/NEUE-UNGETRACKTE-DATEI.md"
+
+  # 14) Ein fehlendes tools-Feld muss den Preflight rot machen. Es sieht nach
+  #     nichts aus -- die Datei bleibt syntaktisch vollstaendig, der Katalog
+  #     stimmt, die Installation meldet 73 von 73 -- vergibt aber in Wahrheit
+  #     ALLE Werkzeuge der Laufzeit. Genau so standen 20 der 73 Agenten
+  #     unbemerkt ohne Werkzeuggrenze da, darunter Pentest und Code-Audit.
+  cp "$REPO/agents/team-security-pentest.md" "$REPO/pentest.sicherung"
+  grep -v '^tools:' "$REPO/pentest.sicherung" > "$REPO/agents/team-security-pentest.md"
+  if (cd "$REPO" && python3 scripts/validate_package.py --mode preflight >/dev/null 2>&1); then
+    bad "Fehlendes tools-Feld macht den Preflight rot" "Agent ohne Werkzeuggrenze durchgelassen"
+  else
+    ok "Fehlendes tools-Feld macht den Preflight rot"
+  fi
+
+  # 15) Und ein Werkzeug ausserhalb des Wortschatzes ebenso. Ohne diese Zeile
+  #     pruefte 14) nur die Anwesenheit des Feldes, nicht seinen Inhalt --
+  #     tools: [Read, Write, Bash] waere gruen durchgelaufen.
+  sed 's/^tools: \[Read, Write\]/tools: [Read, Write, Bash]/' \
+    "$REPO/pentest.sicherung" > "$REPO/agents/team-security-pentest.md"
+  if (cd "$REPO" && python3 scripts/validate_package.py --mode preflight >/dev/null 2>&1); then
+    bad "Unbekanntes Werkzeug macht den Preflight rot" "Bash wurde durchgelassen"
+  else
+    ok "Unbekanntes Werkzeug macht den Preflight rot"
+  fi
+  mv "$REPO/pentest.sicherung" "$REPO/agents/team-security-pentest.md"
 fi
 
 echo ""

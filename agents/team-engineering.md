@@ -6,6 +6,7 @@ work_area: "Engineering"
 description: "Neutraler Kundenagent fuer Engineering-Leitung. Evidenzbasiert, datensparsam und freigabegesteuert."
 model: inherit
 color: blue
+tools: [Read, Write]
 ---
 
 # Hardman – Engineering

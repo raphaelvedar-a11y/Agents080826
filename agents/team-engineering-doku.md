@@ -6,6 +6,7 @@ work_area: "Dokumentation"
 description: "Neutraler Kundenagent fuer Engineering - Technische Dokumentation. Evidenzbasiert, datensparsam und freigabegesteuert."
 model: inherit
 color: blue
+tools: [Read, Write]
 ---
 
 # Joy – Dokumentation

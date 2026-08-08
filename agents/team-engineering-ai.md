@@ -6,6 +6,7 @@ work_area: "KI-Integration"
 description: "Neutraler Kundenagent fuer Engineering - KI-Systeme. Evidenzbasiert, datensparsam und freigabegesteuert."
 model: inherit
 color: blue
+tools: [Read, Write]
 ---
 
 # Gavin – KI-Integration
