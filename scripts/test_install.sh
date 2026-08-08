@@ -233,6 +233,27 @@ if command -v python3 >/dev/null 2>&1; then
     ok "Unbekanntes Werkzeug macht den Preflight rot"
   fi
   mv "$REPO/pentest.sicherung" "$REPO/agents/team-security-pentest.md"
+
+  # 16) Die Bash-Ausnahme gilt namentlich, nicht als Gattung. 15) zeigt, dass
+  #     Bash beim Pentester rot wird; hier, dass sie beim security-reviewer
+  #     gruen ist. Ohne beide Haelften waere nicht geprueft, ob die Ausnahme
+  #     ueberhaupt greift -- oder ob sie in Wahrheit fuer alle gilt.
+  cp "$REPO/agents/security-reviewer.md" "$REPO/reviewer.sicherung"
+  if (cd "$REPO" && python3 scripts/validate_package.py --mode preflight >/dev/null 2>&1); then
+    ok "Bash ist fuer security-reviewer namentlich erlaubt"
+  else
+    bad "Bash ist fuer security-reviewer namentlich erlaubt" "Ausnahme greift nicht"
+  fi
+
+  # 17) Und die Ausnahme deckt genau ein Werkzeug ab, nicht alles Weitere.
+  sed 's/^tools: \[Read, Bash\]/tools: [Read, Bash, Edit]/' \
+    "$REPO/reviewer.sicherung" > "$REPO/agents/security-reviewer.md"
+  if (cd "$REPO" && python3 scripts/validate_package.py --mode preflight >/dev/null 2>&1); then
+    bad "Ausnahme deckt nur Bash, nicht Edit" "Edit wurde durchgelassen"
+  else
+    ok "Ausnahme deckt nur Bash, nicht Edit"
+  fi
+  mv "$REPO/reviewer.sicherung" "$REPO/agents/security-reviewer.md"
 fi
 
 echo ""

@@ -52,9 +52,23 @@ TRIGGER_KEYS = {"departments", "tools", "industries"}
 #
 # Deshalb hier eine Positivliste statt einer Sperrliste: ein neu eingefuehrtes,
 # noch nicht eingeordnetes Werkzeug schlaegt rot auf, statt still
-# durchzurutschen. Wer einem Agenten kuenftig Bash geben will, traegt es hier
-# bewusst ein -- und diese Zeile ist dann die Stelle, an der jemand hinsieht.
+# durchzurutschen.
 ALLOWED_TOOLS = {"Read", "Write", "ToolSearch"}
+
+# Werkzeuge ueber den Wortschatz hinaus, namentlich und je Agent.
+#
+# Bewusst kein Eintrag in ALLOWED_TOOLS: dort stuende Bash allen 73 Agenten
+# offen und die Pruefung waere fuer genau das Werkzeug blind, dessentwegen es
+# sie gibt. Hier kostet jede Erweiterung eine benannte Zeile.
+#
+# security-reviewer: sein Ablauf verlangt lesenden Bash-Gebrauch ausdruecklich
+# ("nutze Bash nur read-only: git diff, git log, npm audit, rg"). Er ist kein
+# Kunden-Laufzeitagent, sondern ein lokales Dev-Werkzeug -- die Datei haelt das
+# selbst fest ("keine Kunden-Runtime, kein per-Agent-MCP"). Fuer den
+# Kunden-Security-Zweig gilt weiterhin "Kein Bash" aus team-security.md.
+EXTRA_TOOLS_BY_AGENT = {
+    "security-reviewer": {"Bash"},
+}
 
 # MCP-Werkzeuge werden ueber ihr Namensmuster zugelassen, nicht einzeln: welche
 # Server der Kunde aktiviert, entscheidet er selbst (siehe docs/MCP-SETUP.md).
@@ -193,7 +207,12 @@ def check_agent_tools(path: Path, text: str, errors: list[str]) -> None:
     vergibt dann alle Werkzeuge, die sie hat. Ein fehlendes Feld ist damit die
     weiteste Vergabe im ganzen Paket -- und die einzige, die niemand
     aufgeschrieben hat. Siehe ALLOWED_TOOLS.
+
+    Geprueft wird gegen den Wortschatz plus die namentliche Ausnahme dieses
+    Agenten (EXTRA_TOOLS_BY_AGENT). Der Dateiname ist als Schluessel sicher:
+    check_agent_files stellt zuvor fest, dass name und Dateiname uebereinstimmen.
     """
+    erlaubt = ALLOWED_TOOLS | EXTRA_TOOLS_BY_AGENT.get(path.stem, set())
     match = re.search(r"(?m)^tools:\s*\[(.*?)\]\s*$", text)
     if not match:
         fail(
@@ -209,11 +228,11 @@ def check_agent_tools(path: Path, text: str, errors: list[str]) -> None:
         return
 
     for werkzeug in eintraege:
-        if werkzeug in ALLOWED_TOOLS or MCP_TOOL_PATTERN.match(werkzeug):
+        if werkzeug in erlaubt or MCP_TOOL_PATTERN.match(werkzeug):
             continue
         fail(
             f"unknown tool {werkzeug!r} in {path.relative_to(ROOT)} "
-            f"(erlaubt: {', '.join(sorted(ALLOWED_TOOLS))} oder mcp__server__tool)",
+            f"(erlaubt: {', '.join(sorted(erlaubt))} oder mcp__server__tool)",
             errors,
         )
 
