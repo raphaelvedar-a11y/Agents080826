@@ -24,6 +24,22 @@ Genau dieser Punkt ist in der Vergangenheit schiefgegangen: Eine Installation
 endete bei 0 von 73 Agenten, ohne dass es jemand bemerkt hat. Ein unvollstaendiger
 Stand wird deshalb immer aktiv gemeldet, nie weggelassen.
 
+**Der Bericht beschreibt immer nur den letzten Lauf.** Sein Pfad haengt am
+Repository, nicht am Ziel: `--project` und `--user` schreiben beide nach
+`<repo>/.claude/agent-install-report.json`, der zweite Lauf ueberschreibt also
+den ersten. Wer beide Ziele bedient, liest sonst einen Bericht, der die andere
+Installation beschreibt -- welche gemeint ist, steht im Feld `target_dir`.
+Getrennt nachweisen laesst es sich mit `--report`:
+
+```bash
+./scripts/install.sh --project --report .claude/agent-install-report.json
+./scripts/install.sh --user    --report .claude/agent-install-report.user.json
+```
+
+Achtung dabei: die Aktivierungsliste `agent-activation.json` wird neben dem
+Bericht abgelegt. Ein anderer `--report`-Pfad verschiebt sie mit, und Stufe 1
+unten sucht sie dann am alten Ort vergeblich.
+
 ## Danach: Onboarding in zwei Stufen
 
 Die Reihenfolge ist bewusst so gewaehlt und in `docs/ONBOARDING-ABLAUF.md`

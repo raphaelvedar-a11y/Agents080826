@@ -18,7 +18,11 @@ __pycache__/
 # versioniert unter agents/; die installierten Kopien und die Berichte sind
 # kundenspezifischer Laufzeitzustand und gehoeren nicht ins Repository.
 .claude/agents/
-.claude/agent-install-report.json
+# Muster statt fester Name: --report darf den Bericht umbenennen, etwa
+# agent-install-report.user.json, wenn --project und --user getrennt
+# nachgewiesen werden (siehe CLAUDE.md). Ein exakter Name liess genau diese
+# Datei unversioniert im Baum stehen.
+.claude/agent-install-report*.json
 .claude/agent-activation.json
 *.bak-*
 
